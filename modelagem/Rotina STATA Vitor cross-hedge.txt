@@ -1,0 +1,384 @@
+
+  ___  ____  ____  ____  ____ (R)
+ /__    /   ____/   /   ____/
+___/   /   /___/   /   /___/   12.0   Copyright 1985-2011 StataCorp LP
+  Statistics/Data Analysis            StataCorp
+                                      4905 Lakeway Drive
+     Special Edition                  College Station, Texas 77845 USA
+                                      800-STATA-PC        http://www.stata.com
+                                      979-696-4600        stata@stata.com
+                                      979-696-4601 (fax)
+
+Single-user Stata network perpetual license:
+       Serial number:  93611859953
+         Licensed to:  STATA SE
+                       vitor
+
+Notes:
+      1.  (/v# option or -set maxvar-) 5000 maximum variables
+
+. import excel "D:\ARQUIVOS\AREA DO USUARIO\Desktop\dados.xlsx", sheet("Plan1") firstrow
+
+. generate time1 = _n
+
+. generate time2 = td(08june2012) + _n-1
+
+. tsset time2, daily
+        time variable:  time2, 08jun2012 to 23apr2015
+                delta:  1 day
+
+. twoway (tsline psa)
+
+. dfgls lnpsf
+ 
+DF-GLS for lnpsf                                         Number of obs =  1028
+Maxlag = 21 chosen by Schwert criterion
+ 
+               DF-GLS tau      1% Critical       5% Critical      10% Critical
+  [lags]     Test Statistic        Value             Value             Value
+------------------------------------------------------------------------------
+    21           -2.268           -3.480            -2.828            -2.542
+    20           -2.113           -3.480            -2.829            -2.544
+    19           -2.157           -3.480            -2.831            -2.545
+    18           -2.142           -3.480            -2.832            -2.547
+    17           -2.056           -3.480            -2.834            -2.548
+    16           -1.975           -3.480            -2.835            -2.550
+    15           -2.012           -3.480            -2.837            -2.551
+    14           -2.086           -3.480            -2.839            -2.552
+    13           -2.120           -3.480            -2.840            -2.554
+    12           -2.205           -3.480            -2.841            -2.555
+    11           -2.232           -3.480            -2.843            -2.556
+    10           -2.210           -3.480            -2.844            -2.558
+    9            -2.327           -3.480            -2.846            -2.559
+    8            -2.173           -3.480            -2.847            -2.560
+    7            -2.101           -3.480            -2.849            -2.561
+    6            -1.929           -3.480            -2.850            -2.563
+    5            -1.984           -3.480            -2.851            -2.564
+    4            -2.047           -3.480            -2.853            -2.565
+    3            -2.025           -3.480            -2.854            -2.566
+    2            -2.031           -3.480            -2.855            -2.567
+    1            -2.073           -3.480            -2.856            -2.568
+ 
+Opt Lag (Ng-Perron seq t) = 21 with RMSE  .0144263
+Min SC   = -8.432173 at lag  1 with RMSE  .0146571
+Min MAIC = -8.435691 at lag 10 with RMSE  .0145151
+
+. dfgls lnpsf, maxlag(6)
+ 
+DF-GLS for lnpsf                                         Number of obs =  1043
+ 
+               DF-GLS tau      1% Critical       5% Critical      10% Critical
+  [lags]     Test Statistic        Value             Value             Value
+------------------------------------------------------------------------------
+    6            -1.885           -3.480            -2.850            -2.562
+    5            -1.937           -3.480            -2.851            -2.564
+    4            -1.997           -3.480            -2.852            -2.565
+    3            -1.954           -3.480            -2.854            -2.566
+    2            -1.968           -3.480            -2.855            -2.567
+    1            -2.006           -3.480            -2.856            -2.568
+ 
+Opt Lag (Ng-Perron seq t) = 0 [use maxlag(0)]
+Min SC   = -8.423679 at lag  1 with RMSE  .0147207
+Min MAIC = -8.427325 at lag  1 with RMSE  .0147207
+
+. pperron lnpsf
+
+Phillips-Perron test for unit root                 Number of obs   =      1049
+                                                   Newey-West lags =         6
+
+                               ---------- Interpolated Dickey-Fuller ---------
+                  Test         1% Critical       5% Critical      10% Critical
+               Statistic           Value             Value             Value
+------------------------------------------------------------------------------
+ Z(rho)           -2.456           -20.700           -14.100           -11.300
+ Z(t)             -1.097            -3.430            -2.860            -2.570
+------------------------------------------------------------------------------
+MacKinnon approximate p-value for Z(t) = 0.7164
+
+. dfgls D.lnpsf, maxlag (6)
+ 
+DF-GLS for D.lnpsf                                       Number of obs =  1042
+ 
+               DF-GLS tau      1% Critical       5% Critical      10% Critical
+  [lags]     Test Statistic        Value             Value             Value
+------------------------------------------------------------------------------
+    6           -11.019           -3.480            -2.850            -2.562
+    5           -13.117           -3.480            -2.851            -2.564
+    4           -14.160           -3.480            -2.852            -2.565
+    3           -15.438           -3.480            -2.854            -2.566
+    2           -18.502           -3.480            -2.855            -2.567
+    1           -22.898           -3.480            -2.856            -2.568
+ 
+Opt Lag (Ng-Perron seq t) =  6 with RMSE  .0147435
+Min SC   =  -8.40934 at lag  1 with RMSE  .0148265
+Min MAIC = -6.825643 at lag  6 with RMSE  .0147435
+
+. pperron D.lnpsf
+
+Phillips-Perron test for unit root                 Number of obs   =      1048
+                                                   Newey-West lags =         6
+
+                               ---------- Interpolated Dickey-Fuller ---------
+                  Test         1% Critical       5% Critical      10% Critical
+               Statistic           Value             Value             Value
+------------------------------------------------------------------------------
+ Z(rho)        -1030.355           -20.700           -14.100           -11.300
+ Z(t)            -32.593            -3.430            -2.860            -2.570
+------------------------------------------------------------------------------
+MacKinnon approximate p-value for Z(t) = 0.0000
+
+. pperron D.lnpsa
+
+Phillips-Perron test for unit root                 Number of obs   =      1048
+                                                   Newey-West lags =         6
+
+                               ---------- Interpolated Dickey-Fuller ---------
+                  Test         1% Critical       5% Critical      10% Critical
+               Statistic           Value             Value             Value
+------------------------------------------------------------------------------
+ Z(rho)        -1056.189           -20.700           -14.100           -11.300
+ Z(t)            -33.050            -3.430            -2.860            -2.570
+------------------------------------------------------------------------------
+MacKinnon approximate p-value for Z(t) = 0.0000
+
+. pperron D.lnpma
+
+Phillips-Perron test for unit root                 Number of obs   =      1048
+                                                   Newey-West lags =         6
+
+                               ---------- Interpolated Dickey-Fuller ---------
+                  Test         1% Critical       5% Critical      10% Critical
+               Statistic           Value             Value             Value
+------------------------------------------------------------------------------
+ Z(rho)        -1120.253           -20.700           -14.100           -11.300
+ Z(t)            -29.583            -3.430            -2.860            -2.570
+------------------------------------------------------------------------------
+MacKinnon approximate p-value for Z(t) = 0.0000
+
+. twoway (tsline psf)
+
+. twoway (tsline D.psf)
+
+. twoway (tsline lnpsf)
+
+. twoway (tsline D.lnpsf)
+
+. twoway (tsline D.psf)
+
+. corr lnpsf lnpsa lnpm
+(obs=1050)
+
+             |    lnpsf    lnpsa    lnpma
+-------------+---------------------------
+       lnpsf |   1.0000
+       lnpsa |   0.9431   1.0000
+       lnpma |   0.6881   0.6819   1.0000
+
+
+. corr D.lnpsf D.lnpsa D.lnpm
+(obs=1049)
+
+             |        D.       D.       D.
+             |    lnpsf    lnpsa    lnpma
+-------------+---------------------------
+       lnpsf |
+         D1. |   1.0000
+       lnpsa |
+         D1. |   0.2517   1.0000
+       lnpma |
+         D1. |   0.1743   0.4172   1.0000
+
+
+. regress D.lnpma D.lnpsf
+
+      Source |       SS       df       MS              Number of obs =    1049
+-------------+------------------------------           F(  1,  1047) =   32.79
+       Model |  .005336825     1  .005336825           Prob > F      =  0.0000
+    Residual |  .170381822  1047  .000162733           R-squared     =  0.0304
+-------------+------------------------------           Adj R-squared =  0.0294
+       Total |  .175718647  1048   .00016767           Root MSE      =  .01276
+
+------------------------------------------------------------------------------
+     D.lnpma |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       lnpsf |
+         D1. |   .1528722   .0266947     5.73   0.000      .100491    .2052534
+             |
+       _cons |   .0001109    .000394     0.28   0.778    -.0006622     .000884
+------------------------------------------------------------------------------
+
+. regress D.lnpsa D.lnpsf
+
+      Source |       SS       df       MS              Number of obs =    1049
+-------------+------------------------------           F(  1,  1047) =   70.80
+       Model |  .015537681     1  .015537681           Prob > F      =  0.0000
+    Residual |  .229781705  1047  .000219467           R-squared     =  0.0633
+-------------+------------------------------           Adj R-squared =  0.0624
+       Total |  .245319386  1048  .000234083           Root MSE      =  .01481
+
+------------------------------------------------------------------------------
+     D.lnpsa |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       lnpsf |
+         D1. |   .2608435   .0310007     8.41   0.000      .200013    .3216741
+             |
+       _cons |  -.0001641   .0004575    -0.36   0.720    -.0010619    .0007337
+------------------------------------------------------------------------------
+
+. regress D.lnpma D.lnpsf, robust
+
+Linear regression                                      Number of obs =    1049
+                                                       F(  1,  1047) =   35.40
+                                                       Prob > F      =  0.0000
+                                                       R-squared     =  0.0304
+                                                       Root MSE      =  .01276
+
+------------------------------------------------------------------------------
+             |               Robust
+     D.lnpma |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       lnpsf |
+         D1. |   .1528722   .0256941     5.95   0.000     .1024544      .20329
+             |
+       _cons |   .0001109   .0003947     0.28   0.779    -.0006636    .0008854
+------------------------------------------------------------------------------
+
+. estat archlm
+you must specify force after regress, robust
+r(198);
+
+. regress D.lnpma D.lnpsf
+
+      Source |       SS       df       MS              Number of obs =    1049
+-------------+------------------------------           F(  1,  1047) =   32.79
+       Model |  .005336825     1  .005336825           Prob > F      =  0.0000
+    Residual |  .170381822  1047  .000162733           R-squared     =  0.0304
+-------------+------------------------------           Adj R-squared =  0.0294
+       Total |  .175718647  1048   .00016767           Root MSE      =  .01276
+
+------------------------------------------------------------------------------
+     D.lnpma |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       lnpsf |
+         D1. |   .1528722   .0266947     5.73   0.000      .100491    .2052534
+             |
+       _cons |   .0001109    .000394     0.28   0.778    -.0006622     .000884
+------------------------------------------------------------------------------
+
+. estat archlm
+LM test for autoregressive conditional heteroskedasticity (ARCH)
+---------------------------------------------------------------------------
+    lags(p)  |          chi2               df                 Prob > chi2
+-------------+-------------------------------------------------------------
+       1     |         64.226               1                   0.0000
+---------------------------------------------------------------------------
+         H0: no ARCH effects      vs.  H1: ARCH(p) disturbance
+
+. mgarch dcc (D.lnpma D.lnpsf =, arch(1/1) garch(1/1)), distribution(t)
+
+Calculating starting values....
+
+Optimizing log likelihood
+
+(setting technique to bhhh)
+Iteration 0:   log likelihood =  6093.7768  
+Iteration 1:   log likelihood =  6119.5925  
+Iteration 2:   log likelihood =  6144.7487  
+Iteration 3:   log likelihood =  6161.5761  
+Iteration 4:   log likelihood =  6169.6828  
+numerical derivatives are approximate
+flat or discontinuous region encountered
+Iteration 5:   log likelihood =  6169.8163  (not concave)
+could not calculate numerical derivatives -- flat or discontinuous region encountered
+could not calculate numerical derivatives -- flat or discontinuous region encountered
+r(430);
+
+. mgarch dcc (D.pma D.psf =, arch(1/1) garch(1/1)), distribution(t)
+
+Calculating starting values....
+
+Optimizing log likelihood
+
+(setting technique to bhhh)
+Iteration 0:   log likelihood =  38.503417  
+Iteration 1:   log likelihood =  80.923118  
+Iteration 2:   log likelihood =  155.89074  
+Iteration 3:   log likelihood =  172.17544  
+Iteration 4:   log likelihood =  177.69051  
+Iteration 5:   log likelihood =  177.91788  
+Iteration 6:   log likelihood =  177.92728  
+Iteration 7:   log likelihood =  177.92759  
+Iteration 8:   log likelihood =  177.92792  
+Iteration 9:   log likelihood =  177.92797  
+(switching technique to nr)
+Iteration 10:  log likelihood =  177.92798  
+
+Refining estimates
+
+Iteration 0:   log likelihood =  177.92798  
+Iteration 1:   log likelihood =  177.92798  
+
+Dynamic conditional correlation MGARCH model
+
+Sample: 08jun2012 - 23apr2015                      Number of obs   =      1049
+Distribution: t                                    Wald chi2(.)    =         .
+Log likelihood =   177.928                         Prob > chi2     =         .
+
+------------------------------------------------------------------------------
+             |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+D.pma        |
+       _cons |  -.0100625   .0041168    -2.44   0.015    -.0181312   -.0019938
+-------------+----------------------------------------------------------------
+ARCH_D.pma   |
+        arch |
+         L1. |   .1452214   .0387702     3.75   0.000     .0692333    .2212095
+             |
+       garch |
+         L1. |   .7473673   .0720079    10.38   0.000     .6062344    .8885002
+             |
+       _cons |   .0027296   .0010922     2.50   0.012      .000589    .0048703
+-------------+----------------------------------------------------------------
+D.psf        |
+       _cons |   -.000278   .0090457    -0.03   0.975    -.0180073    .0174513
+-------------+----------------------------------------------------------------
+ARCH_D.psf   |
+        arch |
+         L1. |   .0599462   .0128135     4.68   0.000     .0348321    .0850602
+             |
+       garch |
+         L1. |   .9319926   .0126415    73.72   0.000     .9072158    .9567695
+             |
+       _cons |   .0010451   .0005343     1.96   0.050    -2.22e-06    .0020923
+-------------+----------------------------------------------------------------
+Correlation  |
+  D.pma      |
+       D.psf |   .1817367   .0482997     3.76   0.000      .087071    .2764025
+-------------+----------------------------------------------------------------
+Adjustment   |
+     lambda1 |   .0367104    .020607     1.78   0.075    -.0036786    .0770993
+     lambda2 |   .8802159    .063193    13.93   0.000     .7563598    1.004072
+-------------+----------------------------------------------------------------
+df           |
+       _cons |   6.811852   .9230802     7.38   0.000     5.002648    8.621056
+------------------------------------------------------------------------------
+
+. mgarch dcc (D.lnpma D.lnpsf =, arch(1/1) garch(1/1)), distribution(t)
+
+Calculating starting values....
+
+Optimizing log likelihood
+
+(setting technique to bhhh)
+Iteration 0:   log likelihood =  6093.7768  
+Iteration 1:   log likelihood =  6119.5925  
+Iteration 2:   log likelihood =  6144.7487  
+Iteration 3:   log likelihood =  6161.5761  
+Iteration 4:   log likelihood =  6169.6828  
+numerical derivatives are approximate
+flat or discontinuous region encountered
+Iteration 5:   log likelihood =  6169.8163  (not concave)
+could not calculate numerical derivatives -- flat or discontinuous region encountered
+could not calculate numerical derivatives -- flat or discontinuous region encountered
+r(430);
+
